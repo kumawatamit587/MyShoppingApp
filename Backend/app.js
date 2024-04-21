@@ -15,9 +15,13 @@ app.use((req, res, next) => {
 });
 
 app.get("/items", async (req, res) => {
-  const storedItems = await getStoredItems();
-  await new Promise((resolve, reject) => setTimeout(() => resolve(), 4000));
-  res.json({ items: storedItems });
+  try {
+    const storedItems = await getStoredItems();
+    await new Promise((resolve, reject) => setTimeout(() => resolve(), 4000));
+    res.json({ items: storedItems });
+  } catch (err) {
+    res.json({ error: err });
+  }
 });
 
 app.get("/items/:id", async (req, res) => {
@@ -39,3 +43,5 @@ app.post("/items", async (req, res) => {
 });
 
 app.listen(8080);
+
+module.exports = app;
